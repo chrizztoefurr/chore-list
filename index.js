@@ -11,43 +11,43 @@ const choreListInDB = ref(database, "choreList")
 
 const inputFieldEl = document.getElementById("input-field")
 const addButtonEl = document.getElementById("add-button")
-const shoppingListEl = document.getElementById("shopping-list")
+const choreListEl = document.getElementById("chore-list")
 
 addButtonEl.addEventListener("click", function() {
     let inputValue = inputFieldEl.value
     
-    push(shoppingListInDB, inputValue)
+    push(choreListInDB, inputValue)
     
     clearInputFieldEl()
 })
 
-onValue(shoppingListInDB, function(snapshot) {
+onValue(choreListInDB, function(snapshot) {
     if (snapshot.exists()) {
         let itemsArray = Object.entries(snapshot.val())
     
-        clearShoppingListEl()
+        clearChoreListEl()
         
         for (let i = 0; i < itemsArray.length; i++) {
             let currentItem = itemsArray[i]
             let currentItemID = currentItem[0]
             let currentItemValue = currentItem[1]
             
-            appendItemToShoppingListEl(currentItem)
+            appendItemToChoreListEl(currentItem)
         }    
     } else {
-        shoppingListEl.innerHTML = "No items here... yet"
+        choreListEl.innerHTML = "No items here... yet"
     }
 })
 
-function clearShoppingListEl() {
-    shoppingListEl.innerHTML = ""
+function clearChoreListEl() {
+    choreListEl.innerHTML = ""
 }
 
 function clearInputFieldEl() {
     inputFieldEl.value = ""
 }
 
-function appendItemToShoppingListEl(item) {
+function appendItemToChoreListEl(item) {
     let itemID = item[0]
     let itemValue = item[1]
     
@@ -56,10 +56,10 @@ function appendItemToShoppingListEl(item) {
     newEl.textContent = itemValue
     
     newEl.addEventListener("click", function() {
-        let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`)
+        let exactLocationOfItemInDB = ref(database, `choreList/${itemID}`)
         
         remove(exactLocationOfItemInDB)
     })
     
-    shoppingListEl.append(newEl)
+    choreListEl.append(newEl)
 }
